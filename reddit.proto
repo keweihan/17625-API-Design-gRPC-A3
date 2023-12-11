@@ -1,26 +1,25 @@
 syntax = "proto3";
 
-option java_multiple_files = true;
-option java_package = "io.grpc.examples.helloworld";
-option java_outer_classname = "HelloWorldProto";
-option objc_class_prefix = "HLW";
-
-package helloworld;
+package reddit;
 
 // The greeting service definition.
 service Greeter {
     // Sends a greeting
     rpc CreatePost (CreatePostRequest) returns (Post) {}
 
-    rpc UpvoteDownvotePost (PostID) returns (Post) {}
+    rpc DownvotePost (PostID) returns (Post) {}
+
+    rpc UpvotePost (PostID) returns (Post) {}
 
     rpc RetrievePost (PostID) returns (Post) {}
 
     rpc CreateComment (CreateCommentRequest) returns (Comment) {}
 
-    rpc UpvoteDownvoteComment (CommentID) returns (Comment) {}
+    rpc UpvoteComment (CommentID) returns (Comment) {}
 
-    rpc CommentStream (ExpandCommentBranchRequest) returns (stream Comment) {}
+    rpc DownvoteComment (CommentID) returns (Comment) {}
+
+    rpc ExpandComment (ExpandCommentBranchRequest) returns (stream Comment) {}
 
     //rpc MonitorUpdate (stream ) 
 }
@@ -37,13 +36,13 @@ message PostID {
 }
 
 enum PostState {
-    NORMAL = 0;
-    LOCKED = 1;
-    HIDDEN = 2;
+    NORMAL_POST = 0;
+    LOCKED_POST = 1;
+    HIDDEN_POST = 2;
 }
 
 message Post {
-    PostID id = 0;
+    PostID id = 10;
     string title = 1;
     string text = 2;
     oneof url {
@@ -75,13 +74,13 @@ message CommentID {
 }
 
 enum CommentState {
-    NORMAL = 0;
-    HIDDEN = 1;
+    NORMAL_COMMENT = 0;
+    HIDDEN_COMMENT = 1;
 }
 
 message Comment {
     CommentID id = 9;
-    string author = 0;
+    string author = 10;
     int32 score = 1;
     CommentState state = 2;
     string pub_date = 3;
@@ -93,7 +92,7 @@ message Comment {
 }
 
 message CreateCommentRequest {
-    string author = 0;
+    string author = 5;
     string pub_date = 1;
     CommentState state = 2;
     oneof parent {
@@ -103,24 +102,24 @@ message CreateCommentRequest {
 }
 
 message MostUpvotedCommentRequest {
-    PostID post = 0;
-    int32 number = 1;
+    PostID post = 1;
+    int32 number = 2;
 }
 
 message ExpandCommentBranchRequest {
-    CommentID comment = 0;
-    int32 number = 1;
+    CommentID comment = 1;
+    int32 number = 2;
 }
 
 // Subreddit
 enum SubredditState {
-    PUBLIC = 0;
-    PRIVATE = 1;
-    HIDDEN = 2;
+    PUBLIC_SUBREDDIT = 0;
+    PRIVATE_SUBREDDIT = 1;
+    HIDDEN_SUBREDDIT = 2;
 }
 
 message Subreddit {
-    string name = 0;
+    string name = 4;
     SubredditState state = 1;
     string pub_date = 2;
     repeated string tags = 3;
