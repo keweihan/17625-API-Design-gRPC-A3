@@ -9,13 +9,40 @@ import grpc
 import reddit_pb2
 import reddit_pb2_grpc
 
+import uuid
 import reddit_server_db
 
 # RedditService provides an implementation of the methods of the RedditServicer service.
 class RedditService(reddit_pb2_grpc.RedditServicer):
     
     def CreatePost(self, request, context):
-        return super().CreatePost(request, context)
+        # Generate a unique post ID
+        post_id = str(uuid.uuid4())[:4] # take first four characters only - for demo purpose.
+
+        # Extract other post data from the request
+        newPost = reddit_pb2.Post(
+            id          = reddit_pb2.PostID(id=post_id),
+            title       = request.title,
+            text        = request.text,
+            video       = request.video if request.video else None,
+            img         = request.img if request.img else None,
+            author      = request.pub_date,
+            pub_date    = request.pub_date,
+        )
+
+        # Insert the new post into the database
+        conn = reddit_server_db.get_db()
+        cur = conn.cursor()
+        cur.execute("""
+            INSERT INTO posts (id, title, text, video, img, author, pub_date)
+            VALUES (?, ?, ?, ?, ?, ?, ?)""",
+            (post_id, newPost.title, newPost.text, newPost.video, newPost.img, newPost.author, newPost.pub_date)
+        )
+        conn.commit()
+        conn.close()
+
+        # Create and return the Post object
+        return newPost
     
     def DownvotePost(self, request, context):
         return super().DownvotePost(request, context)
@@ -23,7 +50,7 @@ class RedditService(reddit_pb2_grpc.RedditServicer):
     def UpvotePost(self, request, context):
         return super().UpvotePost(request, context)
     
-    def RetrievePost(self, request, context):
+    def RetrievePost(self, request: reddit_pb2.PostID, context):
         post_id = request.id
         
         # Retrieve from database

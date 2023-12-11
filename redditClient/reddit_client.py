@@ -12,6 +12,10 @@ import reddit_pb2_grpc
 def retrieve_post(stub: reddit_pb2_grpc.RedditStub, post_id: str):
     response = stub.RetrievePost(reddit_pb2.PostID(id=post_id))
     print("Received post %s" % (response.title))
+    
+def create_empty_post(stub: reddit_pb2_grpc.RedditStub):
+    response = stub.CreatePost(reddit_pb2.CreatePostRequest())
+    print("Received post %s" % (response.id))
 
 def run():
     # NOTE(gRPC Python Team): .close() is possible on a channel and should be
@@ -21,8 +25,8 @@ def run():
         stub = reddit_pb2_grpc.RedditStub(channel)
         print("-------------- GetFeature --------------")
         retrieve_post(stub, "post1")
-        print("-------------- ListFeatures --------------")
-        # Todo
+        print("-------------- Empty Post --------------")
+        create_empty_post(stub)
         print("-------------- RecordRoute --------------")
         # Todo
         print("-------------- RouteChat --------------")
