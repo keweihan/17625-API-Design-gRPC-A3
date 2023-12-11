@@ -13,6 +13,10 @@ def retrieve_post(stub: reddit_pb2_grpc.RedditStub, post_id: str):
     response = stub.RetrievePost(reddit_pb2.PostID(id=post_id))
     print("Received post %s" % (response.title))
     
+def upvote_post(stub: reddit_pb2_grpc.RedditStub, post_id: str):
+    response = stub.UpvotePost(reddit_pb2.PostID(id=post_id))
+    print(f"Received post {response.title} has {response.score} votes")
+    
 def create_empty_post(stub: reddit_pb2_grpc.RedditStub):
     response = stub.CreatePost(reddit_pb2.CreatePostRequest())
     print("Received post %s" % (response.id))
@@ -27,8 +31,8 @@ def run():
         retrieve_post(stub, "post1")
         print("-------------- Empty Post --------------")
         create_empty_post(stub)
-        print("-------------- RecordRoute --------------")
-        # Todo
+        print("-------------- Upvote Post --------------")
+        upvote_post(stub, "post1")
         print("-------------- RouteChat --------------")
         # Todo
 

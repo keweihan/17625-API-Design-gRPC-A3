@@ -45,10 +45,28 @@ class RedditService(reddit_pb2_grpc.RedditServicer):
         return newPost
     
     def DownvotePost(self, request, context):
-        return super().DownvotePost(request, context)
+        post_id = request.id
+        
+        conn = reddit_server_db.get_db()
+        cur = conn.cursor()
+        cur.execute("UPDATE posts SET score = score - 1 WHERE id = ?", (post_id,))
+        conn.commit()
+        
+        conn.close()
+        
+        return self.RetrievePost(request, context)
     
     def UpvotePost(self, request, context):
-        return super().UpvotePost(request, context)
+            post_id = request.id
+            
+            conn = reddit_server_db.get_db()
+            cur = conn.cursor()
+            cur.execute("UPDATE posts SET score = score + 1 WHERE id = ?", (post_id,))
+            conn.commit()
+            
+            conn.close()
+            
+            return self.RetrievePost(request, context)
     
     def RetrievePost(self, request: reddit_pb2.PostID, context):
         post_id = request.id
