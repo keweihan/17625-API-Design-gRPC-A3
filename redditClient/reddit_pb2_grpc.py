@@ -55,6 +55,11 @@ class RedditStub(object):
                 request_serializer=reddit__pb2.ExpandCommentBranchRequest.SerializeToString,
                 response_deserializer=reddit__pb2.Comment.FromString,
                 )
+        self.RetrieveComments = channel.unary_stream(
+                '/reddit.Reddit/RetrieveComments',
+                request_serializer=reddit__pb2.RetrieveCommentRequest.SerializeToString,
+                response_deserializer=reddit__pb2.Comment.FromString,
+                )
 
 
 class RedditServicer(object):
@@ -117,6 +122,13 @@ class RedditServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def RetrieveComments(self, request, context):
+        """retrieve comments of post
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_RedditServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -158,6 +170,11 @@ def add_RedditServicer_to_server(servicer, server):
             'ExpandComment': grpc.unary_stream_rpc_method_handler(
                     servicer.ExpandComment,
                     request_deserializer=reddit__pb2.ExpandCommentBranchRequest.FromString,
+                    response_serializer=reddit__pb2.Comment.SerializeToString,
+            ),
+            'RetrieveComments': grpc.unary_stream_rpc_method_handler(
+                    servicer.RetrieveComments,
+                    request_deserializer=reddit__pb2.RetrieveCommentRequest.FromString,
                     response_serializer=reddit__pb2.Comment.SerializeToString,
             ),
     }
@@ -303,6 +320,23 @@ class Reddit(object):
             metadata=None):
         return grpc.experimental.unary_stream(request, target, '/reddit.Reddit/ExpandComment',
             reddit__pb2.ExpandCommentBranchRequest.SerializeToString,
+            reddit__pb2.Comment.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def RetrieveComments(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_stream(request, target, '/reddit.Reddit/RetrieveComments',
+            reddit__pb2.RetrieveCommentRequest.SerializeToString,
             reddit__pb2.Comment.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

@@ -28,6 +28,9 @@ service Reddit {
     // expand comment (depth=2)
     rpc ExpandComment (ExpandCommentBranchRequest) returns (stream Comment) {}
 
+    // retrieve comments of post
+    rpc RetrieveComments (RetrieveCommentRequest) returns (stream Comment) {}
+
     //rpc MonitorUpdate (stream ) 
 }
 
@@ -115,6 +118,11 @@ message MostUpvotedCommentRequest {
 
 message ExpandCommentBranchRequest {
     CommentID comment = 1;
+    int32 number = 2;
+}
+
+message RetrieveCommentRequest {
+    PostID post = 1;
     int32 number = 2;
 }
 

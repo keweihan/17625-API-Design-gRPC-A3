@@ -141,6 +141,14 @@ class ExpandCommentBranchRequest(_message.Message):
     number: int
     def __init__(self, comment: _Optional[_Union[CommentID, _Mapping]] = ..., number: _Optional[int] = ...) -> None: ...
 
+class RetrieveCommentRequest(_message.Message):
+    __slots__ = ("post", "number")
+    POST_FIELD_NUMBER: _ClassVar[int]
+    NUMBER_FIELD_NUMBER: _ClassVar[int]
+    post: PostID
+    number: int
+    def __init__(self, post: _Optional[_Union[PostID, _Mapping]] = ..., number: _Optional[int] = ...) -> None: ...
+
 class Subreddit(_message.Message):
     __slots__ = ("name", "state", "pub_date", "tags")
     NAME_FIELD_NUMBER: _ClassVar[int]
