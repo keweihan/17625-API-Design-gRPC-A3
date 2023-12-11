@@ -20,7 +20,7 @@ def run():
     with grpc.insecure_channel("localhost:50051") as channel:
         stub = reddit_pb2_grpc.RedditStub(channel)
         print("-------------- GetFeature --------------")
-        retrieve_post(stub, "1")
+        retrieve_post(stub, "post1")
         print("-------------- ListFeatures --------------")
         # Todo
         print("-------------- RecordRoute --------------")

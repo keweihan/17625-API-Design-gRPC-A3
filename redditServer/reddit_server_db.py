@@ -15,7 +15,7 @@ def reset_db():
     if os.path.exists(db_path):
         os.remove(db_path)
         
-def setup_database():
+def setup_db():
     # Delete existing database. Create new one in same folder as this script.
     reset_db()
     conn = sqlite3.connect(get_absolute_path('reddit.db'))
@@ -28,5 +28,27 @@ def setup_database():
     conn.commit()
     conn.close()
 
+def get_db():
+    conn = sqlite3.connect(get_absolute_path('reddit.db'))
+    conn.row_factory = sqlite3.Row
+    return conn
+
+def get_post_by_id(post_id):
+    conn = get_db()
+    cur = conn.cursor()
+
+    cur.execute("SELECT * FROM posts WHERE id = ?", (post_id,))
+    post_data = cur.fetchone()
+
+    conn.close()
+
+    if post_data:
+        # Convert the row to a dictionary (if row_factory is sqlite3.Row)
+        return dict(post_data)
+    else:
+        return None  # Or handle the case where the post is not found
+
+
 if __name__ == "__main__":
-    setup_database()
+    print(get_post_by_id('post1'))
+    
