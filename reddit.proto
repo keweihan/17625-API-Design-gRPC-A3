@@ -3,22 +3,29 @@ syntax = "proto3";
 package reddit;
 
 // The greeting service definition.
-service Greeter {
-    // Sends a greeting
+service Reddit {
+    // Creates a post object
     rpc CreatePost (CreatePostRequest) returns (Post) {}
 
+    // Downvotes a post given postID
     rpc DownvotePost (PostID) returns (Post) {}
 
+    // Upvotes a post given postID
     rpc UpvotePost (PostID) returns (Post) {}
 
+    // Retrieves post given postID
     rpc RetrievePost (PostID) returns (Post) {}
 
+    // create comment based on comment request
     rpc CreateComment (CreateCommentRequest) returns (Comment) {}
 
+    // upvote comment
     rpc UpvoteComment (CommentID) returns (Comment) {}
 
+    // downvote comment
     rpc DownvoteComment (CommentID) returns (Comment) {}
 
+    // expand comment (depth=2)
     rpc ExpandComment (ExpandCommentBranchRequest) returns (stream Comment) {}
 
     //rpc MonitorUpdate (stream ) 

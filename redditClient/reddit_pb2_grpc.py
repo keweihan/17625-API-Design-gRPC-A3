@@ -5,7 +5,7 @@ import grpc
 import reddit_pb2 as reddit__pb2
 
 
-class GreeterStub(object):
+class RedditStub(object):
     """The greeting service definition.
     """
 
@@ -16,102 +16,109 @@ class GreeterStub(object):
             channel: A grpc.Channel.
         """
         self.CreatePost = channel.unary_unary(
-                '/reddit.Greeter/CreatePost',
+                '/reddit.Reddit/CreatePost',
                 request_serializer=reddit__pb2.CreatePostRequest.SerializeToString,
                 response_deserializer=reddit__pb2.Post.FromString,
                 )
         self.DownvotePost = channel.unary_unary(
-                '/reddit.Greeter/DownvotePost',
+                '/reddit.Reddit/DownvotePost',
                 request_serializer=reddit__pb2.PostID.SerializeToString,
                 response_deserializer=reddit__pb2.Post.FromString,
                 )
         self.UpvotePost = channel.unary_unary(
-                '/reddit.Greeter/UpvotePost',
+                '/reddit.Reddit/UpvotePost',
                 request_serializer=reddit__pb2.PostID.SerializeToString,
                 response_deserializer=reddit__pb2.Post.FromString,
                 )
         self.RetrievePost = channel.unary_unary(
-                '/reddit.Greeter/RetrievePost',
+                '/reddit.Reddit/RetrievePost',
                 request_serializer=reddit__pb2.PostID.SerializeToString,
                 response_deserializer=reddit__pb2.Post.FromString,
                 )
         self.CreateComment = channel.unary_unary(
-                '/reddit.Greeter/CreateComment',
+                '/reddit.Reddit/CreateComment',
                 request_serializer=reddit__pb2.CreateCommentRequest.SerializeToString,
                 response_deserializer=reddit__pb2.Comment.FromString,
                 )
         self.UpvoteComment = channel.unary_unary(
-                '/reddit.Greeter/UpvoteComment',
+                '/reddit.Reddit/UpvoteComment',
                 request_serializer=reddit__pb2.CommentID.SerializeToString,
                 response_deserializer=reddit__pb2.Comment.FromString,
                 )
         self.DownvoteComment = channel.unary_unary(
-                '/reddit.Greeter/DownvoteComment',
+                '/reddit.Reddit/DownvoteComment',
                 request_serializer=reddit__pb2.CommentID.SerializeToString,
                 response_deserializer=reddit__pb2.Comment.FromString,
                 )
         self.ExpandComment = channel.unary_stream(
-                '/reddit.Greeter/ExpandComment',
+                '/reddit.Reddit/ExpandComment',
                 request_serializer=reddit__pb2.ExpandCommentBranchRequest.SerializeToString,
                 response_deserializer=reddit__pb2.Comment.FromString,
                 )
 
 
-class GreeterServicer(object):
+class RedditServicer(object):
     """The greeting service definition.
     """
 
     def CreatePost(self, request, context):
-        """Sends a greeting
+        """Creates a post object
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def DownvotePost(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Downvotes a post given postID
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def UpvotePost(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Upvotes a post given postID
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def RetrievePost(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Retrieves post given postID
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def CreateComment(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """create comment based on comment request
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def UpvoteComment(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """upvote comment
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def DownvoteComment(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """downvote comment
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def ExpandComment(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """expand comment (depth=2)
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
 
-def add_GreeterServicer_to_server(servicer, server):
+def add_RedditServicer_to_server(servicer, server):
     rpc_method_handlers = {
             'CreatePost': grpc.unary_unary_rpc_method_handler(
                     servicer.CreatePost,
@@ -155,12 +162,12 @@ def add_GreeterServicer_to_server(servicer, server):
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'reddit.Greeter', rpc_method_handlers)
+            'reddit.Reddit', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
 
 
  # This class is part of an EXPERIMENTAL API.
-class Greeter(object):
+class Reddit(object):
     """The greeting service definition.
     """
 
@@ -175,7 +182,7 @@ class Greeter(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/reddit.Greeter/CreatePost',
+        return grpc.experimental.unary_unary(request, target, '/reddit.Reddit/CreatePost',
             reddit__pb2.CreatePostRequest.SerializeToString,
             reddit__pb2.Post.FromString,
             options, channel_credentials,
@@ -192,7 +199,7 @@ class Greeter(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/reddit.Greeter/DownvotePost',
+        return grpc.experimental.unary_unary(request, target, '/reddit.Reddit/DownvotePost',
             reddit__pb2.PostID.SerializeToString,
             reddit__pb2.Post.FromString,
             options, channel_credentials,
@@ -209,7 +216,7 @@ class Greeter(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/reddit.Greeter/UpvotePost',
+        return grpc.experimental.unary_unary(request, target, '/reddit.Reddit/UpvotePost',
             reddit__pb2.PostID.SerializeToString,
             reddit__pb2.Post.FromString,
             options, channel_credentials,
@@ -226,7 +233,7 @@ class Greeter(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/reddit.Greeter/RetrievePost',
+        return grpc.experimental.unary_unary(request, target, '/reddit.Reddit/RetrievePost',
             reddit__pb2.PostID.SerializeToString,
             reddit__pb2.Post.FromString,
             options, channel_credentials,
@@ -243,7 +250,7 @@ class Greeter(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/reddit.Greeter/CreateComment',
+        return grpc.experimental.unary_unary(request, target, '/reddit.Reddit/CreateComment',
             reddit__pb2.CreateCommentRequest.SerializeToString,
             reddit__pb2.Comment.FromString,
             options, channel_credentials,
@@ -260,7 +267,7 @@ class Greeter(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/reddit.Greeter/UpvoteComment',
+        return grpc.experimental.unary_unary(request, target, '/reddit.Reddit/UpvoteComment',
             reddit__pb2.CommentID.SerializeToString,
             reddit__pb2.Comment.FromString,
             options, channel_credentials,
@@ -277,7 +284,7 @@ class Greeter(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/reddit.Greeter/DownvoteComment',
+        return grpc.experimental.unary_unary(request, target, '/reddit.Reddit/DownvoteComment',
             reddit__pb2.CommentID.SerializeToString,
             reddit__pb2.Comment.FromString,
             options, channel_credentials,
@@ -294,7 +301,7 @@ class Greeter(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_stream(request, target, '/reddit.Greeter/ExpandComment',
+        return grpc.experimental.unary_stream(request, target, '/reddit.Reddit/ExpandComment',
             reddit__pb2.ExpandCommentBranchRequest.SerializeToString,
             reddit__pb2.Comment.FromString,
             options, channel_credentials,
