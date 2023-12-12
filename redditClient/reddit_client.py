@@ -29,11 +29,11 @@ def create_empty_post(stub: reddit_pb2_grpc.RedditStub):
     print("Received post %s" % (response.id))
 
 def create_comment(stub: reddit_pb2_grpc.RedditStub):
-    response = stub.CreateComment(reddit_pb2.CreateCommentRequest(text="Time to dine"))
+    response = stub.CreateComment(reddit_pb2.CreateCommentRequest(text="Time to dine", parent_comment_id=reddit_pb2.CommentID(id="comment1")))
     print("Received post %s" % (response.id))
 
 def expand_comment(stub: reddit_pb2_grpc.RedditStub):
-    arguments = reddit_pb2.ExpandCommentBranchRequest(comment = reddit_pb2.CommentID(id="comment1"), number=2)
+    arguments = reddit_pb2.ExpandCommentBranchRequest(comment = reddit_pb2.CommentID(id="comment1"), number=20)
     comments = stub.ExpandComment(arguments)
     for comment in comments:
         print(f"{comment.text}")

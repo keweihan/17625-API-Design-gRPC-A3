@@ -136,6 +136,16 @@ class RedditService(reddit_pb2_grpc.RedditServicer):
             (comment_id, newComment.text, newComment.author, 0, 0,  
              newComment.pub_date, request.parent_post_id.id, request.parent_comment_id.id)
         )
+        
+        # Check if the comment has a parent comment and update its hasReplies field
+        if request.parent_comment_id.id:
+            cur.execute("""
+                UPDATE comments
+                SET has_replies = 1
+                WHERE id = ?
+            """, 
+            (request.parent_comment_id.id,))
+            
         conn.commit()
         conn.close()
 

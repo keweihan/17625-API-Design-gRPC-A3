@@ -11,6 +11,6 @@ INSERT INTO comments (id, author, score, state, pub_date, parent_post_id, has_re
 ('comment2', 'user1', 3, 0, '2021-02-02', 'post1', False, "I sure hope this assignment doesn't take too long");
 
 INSERT INTO comments (id, author, score, state, pub_date, parent_comment_id, has_replies, text) VALUES
-('comment3', 'user2', -1, 0, '2021-01-02', 'comment1', True, "First reply to comment1"),
-('comment4', 'user1', 0, 0, '2021-02-02', 'comment1', False, "Second reply to comment1"),
+('comment3', 'user2', -1, 0, '2021-01-02', 'comment1', False, "First reply to comment1"),
+('comment4', 'user1', 0, 0, '2021-02-02', 'comment1', True, "Second reply to comment1"),
 ('comment5', 'user1', 0, 0, '2021-02-02', 'comment4', False, "First reply to comment4");
