@@ -79,8 +79,8 @@ class RedditComment:
 
 # Low level interface 
 class RedditServer:
-    def __init__(self):
-        self.channel = grpc.insecure_channel("localhost:50051")
+    def __init__(self, port="50051"):
+        self.channel = grpc.insecure_channel(f"localhost:{port}")
         self.stub = reddit_pb2_grpc.RedditStub(self.channel)
     
     # Call when done.
