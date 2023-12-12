@@ -6,62 +6,81 @@ import logging
 import random
 
 import grpc
-import reddit_pb2
+from reddit_pb2 import *
 import reddit_pb2_grpc
 
-def retrieve_comments(stub: reddit_pb2_grpc.RedditStub, post_id: str):
-    arguments = reddit_pb2.RetrieveCommentRequest(post=reddit_pb2.PostID(id=post_id), number=2)
-    comments = stub.RetrieveComments(arguments)
+from typing import List
 
-    for comment in comments:
-        print(f"{comment.text}")
+# Low level interface 
+class RedditServer:
+    def __init__(self):
+        self.channel = grpc.insecure_channel("localhost:50051")
+        self.stub = reddit_pb2_grpc.RedditStub(self.channel)
+    
+    # Call when done.
+    def close(self):
+        if self.channel:
+            self.channel.close()
+            
+    def retrieve_comments(self, post_id: str, num: int) -> List[Comment]:
+        arguments = RetrieveCommentRequest(post=PostID(id=post_id), number=num)
+        comments = self.stub.RetrieveComments(arguments)
+        return comments
+            
+    def retrieve_post(self, post_id: str) -> Post:
+        response = self.stub.RetrievePost(PostID(id=post_id))
+        return response
         
-def retrieve_post(stub: reddit_pb2_grpc.RedditStub, post_id: str):
-    response = stub.RetrievePost(reddit_pb2.PostID(id=post_id))
-    print("Received post %s" % (response.title))
+    def upvote_post(self, post_id: str) -> Post:
+        response = self.stub.UpvotePost(PostID(id=post_id))
+        return response
     
-def upvote_post(stub: reddit_pb2_grpc.RedditStub, post_id: str):
-    response = stub.UpvotePost(reddit_pb2.PostID(id=post_id))
-    print(f"Received post {response.title} has {response.score} votes")
-    
-def create_empty_post(stub: reddit_pb2_grpc.RedditStub):
-    response = stub.CreatePost(reddit_pb2.CreatePostRequest())
-    print("Received post %s" % (response.id))
+    def downvote_post(self, post_id: str) -> Post:
+        response = self.stub.DownvotePost(PostID(id=post_id))
+        return response
+        
+    def create_post(self, postReq :CreatePostRequest) -> Post:
+        response = self.stub.CreatePost(postReq)
+        return response
 
-def create_comment(stub: reddit_pb2_grpc.RedditStub):
-    response = stub.CreateComment(reddit_pb2.CreateCommentRequest(text="Time to dine", parent_comment_id=reddit_pb2.CommentID(id="comment1")))
-    print("Received post %s" % (response.id))
-
-def expand_comment(stub: reddit_pb2_grpc.RedditStub):
-    arguments = reddit_pb2.ExpandCommentBranchRequest(comment = reddit_pb2.CommentID(id="comment1"), number=20)
-    comments = stub.ExpandComment(arguments)
-    for comment in comments:
-        print(f"{comment.text}")
+    def create_comment_post(self, content: str, post_id: str) -> Comment:
+        response = self.stub.CreateComment(CreateCommentRequest(text=content, parent_post_id=PostID(id=post_id)))
+        return response
     
-def upvote_comment(stub: reddit_pb2_grpc.RedditStub, comment_id: str):
-    response = stub.UpvoteComment(reddit_pb2.CommentID(id=comment_id))
-    print(f"Received comment {response.text} has {response.score} votes")
+    def create_comment_comm(self, content: str, comment_id: str) -> Comment:
+        response = self.stub.CreateComment(CreateCommentRequest(text=content, parent_comment_id=CommentID(id=comment_id)))
+        return response
+
+    def expand_comment(self, comment_id: str, num: int) -> List[Comment]:
+        arguments = ExpandCommentBranchRequest(comment = CommentID(id=comment_id), number=num)
+        comments = self.stub.ExpandComment(arguments)
+        return comments
+        
+    def upvote_comment(self, comment_id: str) -> Comment:
+        response = self.stub.UpvoteComment(CommentID(id=comment_id))
+        return response
+
+    def downvote_comment(self, comment_id: str) -> Comment:
+        response = self.stub.UpvoteComment(CommentID(id=comment_id))
+        return response
     
 def run():
     # NOTE(gRPC Python Team): .close() is possible on a channel and should be
     # used in circumstances in which the with statement does not fit the needs
     # of the code.
-    with grpc.insecure_channel("localhost:50051") as channel:
-        stub = reddit_pb2_grpc.RedditStub(channel)
-        print("-------------- GetFeature --------------")
-        retrieve_post(stub, "post1")
-        print("-------------- Empty Post --------------")
-        create_empty_post(stub)
-        print("-------------- Upvote Post --------------")
-        upvote_post(stub, "post1")
-        print("-------------- Retrieve Comments --------------")
-        retrieve_comments(stub, "post1")
-        print("-------------- Create Comments --------------")
-        create_comment(stub)
-        print("-------------- Expand Comment --------------")
-        expand_comment(stub)
-        print("-------------- Upvote Comment --------------")
-        upvote_comment(stub, "comment1")
+    client = RedditServer()
+    # print("-------------- GetFeature --------------")
+    # client.retrieve_post("post1")
+    # print("-------------- Upvote Post --------------")
+    # client("post1")
+    # print("-------------- Retrieve Comments --------------")
+    # client.retrieve_comments("post1")
+    print("-------------- Create Comments --------------")
+    print(str(client.create_comment_comm("hello", "comment1")))
+    # print("-------------- Expand Comment --------------")
+    # client.expand_comment()
+    # print("-------------- Upvote Comment --------------")
+    # client.upvote_comment("comment1")
 
 
 if __name__ == "__main__":
