@@ -38,6 +38,11 @@ class RedditPost:
             self.state = state
             self.pub_date = pub_date
             self.subreddit = subreddit
+    
+    def __str__(self):
+        return (f"RedditPost(id={self.id}, title={self.title}, text={self.text}, video={self.video}, "
+                f"img={self.img}, author={self.author}, score={self.score}, state={self.state}, "
+                f"pub_date={self.pub_date}, subreddit={self.subreddit})")
 
 
 class RedditComment:
@@ -65,6 +70,12 @@ class RedditComment:
             self.parent_post_id = parent_post_id
             self.parent_comment_id = parent_comment_id
             self.has_replies = has_replies
+    
+    def __str__(self):
+        return (f"RedditComment(id={self.id}, text={self.text}, author={self.author}, "
+                f"score={self.score}, state={self.state}, pub_date={self.pub_date}, "
+                f"parent_post_id={self.parent_post_id}, parent_comment_id={self.parent_comment_id}, "
+                f"has_replies={self.has_replies})")
 
 # Low level interface 
 class RedditServer:

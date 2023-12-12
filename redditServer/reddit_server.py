@@ -226,7 +226,9 @@ class RedditService(reddit_pb2_grpc.RedditServicer):
         top_comments = cur.fetchall()
         expanded_comments = []
         
-
+        print(comment_id)
+        print(top_comments)
+        
         # Second-level comments for each of the top comments
         for top_comment in top_comments:
             top_comment_id = dict(top_comment)['id']  # Assuming the ID field is 'id'
