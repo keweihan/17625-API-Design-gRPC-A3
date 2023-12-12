@@ -92,8 +92,9 @@ class CommentID(_message.Message):
     def __init__(self, id: _Optional[str] = ...) -> None: ...
 
 class Comment(_message.Message):
-    __slots__ = ("id", "author", "score", "state", "pub_date", "parent_post_id", "parent_comment_id", "hasReplies")
+    __slots__ = ("id", "text", "author", "score", "state", "pub_date", "parent_post_id", "parent_comment_id", "hasReplies")
     ID_FIELD_NUMBER: _ClassVar[int]
+    TEXT_FIELD_NUMBER: _ClassVar[int]
     AUTHOR_FIELD_NUMBER: _ClassVar[int]
     SCORE_FIELD_NUMBER: _ClassVar[int]
     STATE_FIELD_NUMBER: _ClassVar[int]
@@ -102,14 +103,15 @@ class Comment(_message.Message):
     PARENT_COMMENT_ID_FIELD_NUMBER: _ClassVar[int]
     HASREPLIES_FIELD_NUMBER: _ClassVar[int]
     id: CommentID
+    text: str
     author: str
     score: int
     state: CommentState
     pub_date: str
-    parent_post_id: Post
+    parent_post_id: PostID
     parent_comment_id: CommentID
     hasReplies: bool
-    def __init__(self, id: _Optional[_Union[CommentID, _Mapping]] = ..., author: _Optional[str] = ..., score: _Optional[int] = ..., state: _Optional[_Union[CommentState, str]] = ..., pub_date: _Optional[str] = ..., parent_post_id: _Optional[_Union[Post, _Mapping]] = ..., parent_comment_id: _Optional[_Union[CommentID, _Mapping]] = ..., hasReplies: bool = ...) -> None: ...
+    def __init__(self, id: _Optional[_Union[CommentID, _Mapping]] = ..., text: _Optional[str] = ..., author: _Optional[str] = ..., score: _Optional[int] = ..., state: _Optional[_Union[CommentState, str]] = ..., pub_date: _Optional[str] = ..., parent_post_id: _Optional[_Union[PostID, _Mapping]] = ..., parent_comment_id: _Optional[_Union[CommentID, _Mapping]] = ..., hasReplies: bool = ...) -> None: ...
 
 class CreateCommentRequest(_message.Message):
     __slots__ = ("author", "pub_date", "state", "parent_post_id", "parent_comment_id")

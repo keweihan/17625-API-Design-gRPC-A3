@@ -9,6 +9,13 @@ import grpc
 import reddit_pb2
 import reddit_pb2_grpc
 
+def retrieve_comments(stub: reddit_pb2_grpc.RedditStub, post_id: str):
+    arguments = reddit_pb2.RetrieveCommentRequest(post=reddit_pb2.PostID(id=post_id), number=2)
+    comments = stub.RetrieveComments(arguments)
+
+    for comment in comments:
+        print(f"{comment.text}")
+        
 def retrieve_post(stub: reddit_pb2_grpc.RedditStub, post_id: str):
     response = stub.RetrievePost(reddit_pb2.PostID(id=post_id))
     print("Received post %s" % (response.title))
@@ -33,8 +40,8 @@ def run():
         create_empty_post(stub)
         print("-------------- Upvote Post --------------")
         upvote_post(stub, "post1")
-        print("-------------- RouteChat --------------")
-        # Todo
+        print("-------------- Retrieve Comments --------------")
+        retrieve_comments(stub, "post1")
 
 
 if __name__ == "__main__":

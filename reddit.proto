@@ -90,12 +90,13 @@ enum CommentState {
 
 message Comment {
     CommentID id = 9;
+    string text = 11;
     string author = 10;
     int32 score = 1;
     CommentState state = 2;
     string pub_date = 3;
     oneof parent {
-        Post parent_post_id = 4;
+        PostID parent_post_id = 4;
         CommentID parent_comment_id = 5;
     }
     bool hasReplies = 6;

@@ -19,6 +19,7 @@ CREATE TABLE IF NOT EXISTS posts (
 CREATE TABLE IF NOT EXISTS comments (
     id TEXT PRIMARY KEY,
     author TEXT,
+    text TEXT,
     score INTEGER,
     state INTEGER,
     pub_date TEXT,

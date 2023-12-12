@@ -121,7 +121,42 @@ class RedditService(reddit_pb2_grpc.RedditServicer):
     def ExpandComment(self, request, context):
         return super().ExpandComment(request, context)
     
-    pass
+    def RetrieveComments(self, request: reddit_pb2.RetrieveCommentRequest, context):
+        post_id = request.post.id
+        num_retrieve = request.number
+        
+        conn = reddit_server_db.get_db()
+        cur = conn.cursor()
+        cur.execute("""
+            SELECT comments.*
+            FROM comments
+            JOIN posts ON comments.parent_post_id = posts.id
+            WHERE posts.id = ?
+            ORDER BY comments.score DESC
+            LIMIT ?
+        """, (post_id, num_retrieve))
+        top_comments = cur.fetchall()
+        conn.close()
+        
+        stateMap = {
+            0 : reddit_pb2.CommentState.NORMAL_COMMENT,
+            1 : reddit_pb2.CommentState.HIDDEN_COMMENT
+        }
+        
+        for comment in top_comments:
+            commentDict = dict(comment)
+            print(commentDict)
+            retObj = reddit_pb2.Comment(
+                id = reddit_pb2.CommentID(id = commentDict["id"]),
+                author=commentDict["author"],
+                score=commentDict["score"],
+                state=stateMap[commentDict["state"]],
+                text=commentDict["text"],
+                parent_comment_id=reddit_pb2.CommentID(id = commentDict["parent_comment_id"]),
+                parent_post_id=reddit_pb2.PostID(id=commentDict["parent_post_id"]),
+                hasReplies=commentDict["has_replies"]
+            )
+            yield retObj
 
 def serve(port):
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
@@ -132,6 +167,7 @@ def serve(port):
     server.wait_for_termination()
     
 if __name__ == '__main__':
+    reddit_server_db.setup_db()
     parser = argparse.ArgumentParser(description='gRPC Server')
     parser.add_argument('--port', type=int, default=50051, help='The server port')
     args = parser.parse_args()
