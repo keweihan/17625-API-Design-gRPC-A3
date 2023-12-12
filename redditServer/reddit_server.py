@@ -149,8 +149,59 @@ class RedditService(reddit_pb2_grpc.RedditServicer):
         return super().DownvoteComment(request, context)
     
     def ExpandComment(self, request, context):
-        return super().ExpandComment(request, context)
-    
+        comment_id = request.comment.id
+        num = request.number
+        
+        # First-level comments (children of this comment)
+        conn = reddit_server_db.get_db()
+        cur = conn.cursor()
+        cur.execute("""
+            SELECT * FROM comments
+            WHERE parent_comment_id = ?
+            ORDER BY score DESC
+            LIMIT ?
+        """, (comment_id, num))
+        top_comments = cur.fetchall()
+        expanded_comments = []
+        
+
+        # Second-level comments for each of the top comments
+        for top_comment in top_comments:
+            top_comment_id = dict(top_comment)['id']  # Assuming the ID field is 'id'
+            cur.execute("""
+                SELECT * FROM comments
+                WHERE parent_comment_id = ?
+                ORDER BY score DESC
+                LIMIT ?
+            """, (top_comment_id, num))
+
+            second_level_comments = cur.fetchall()
+            expanded_comments += second_level_comments
+
+        expanded_comments += top_comments
+        conn.close()
+        
+        stateMap = {
+            0 : reddit_pb2.CommentState.NORMAL_COMMENT,
+            1 : reddit_pb2.CommentState.HIDDEN_COMMENT
+        }
+        
+        print(str(expanded_comments))
+        for comment in expanded_comments:
+            commentDict = dict(comment)
+            retObj = reddit_pb2.Comment(
+                id = reddit_pb2.CommentID(id = commentDict["id"]),
+                author=commentDict["author"],
+                score=commentDict["score"],
+                state=stateMap[commentDict["state"]],
+                text=commentDict["text"],
+                parent_comment_id=reddit_pb2.CommentID(id = commentDict["parent_comment_id"]),
+                parent_post_id=reddit_pb2.PostID(id=commentDict["parent_post_id"]),
+                hasReplies=commentDict["has_replies"]
+            )
+            yield retObj
+            
+                
     def RetrieveComments(self, request: reddit_pb2.RetrieveCommentRequest, context):
         post_id = request.post.id
         num_retrieve = request.number
@@ -175,7 +226,6 @@ class RedditService(reddit_pb2_grpc.RedditServicer):
         
         for comment in top_comments:
             commentDict = dict(comment)
-            print(commentDict)
             retObj = reddit_pb2.Comment(
                 id = reddit_pb2.CommentID(id = commentDict["id"]),
                 author=commentDict["author"],

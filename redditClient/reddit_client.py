@@ -32,6 +32,13 @@ def create_comment(stub: reddit_pb2_grpc.RedditStub):
     response = stub.CreateComment(reddit_pb2.CreateCommentRequest(text="Time to dine"))
     print("Received post %s" % (response.id))
 
+def expand_comment(stub: reddit_pb2_grpc.RedditStub):
+    arguments = reddit_pb2.ExpandCommentBranchRequest(comment = reddit_pb2.CommentID(id="comment1"), number=2)
+    comments = stub.ExpandComment(arguments)
+    for comment in comments:
+        print(f"{comment.text}")
+    
+    
 def run():
     # NOTE(gRPC Python Team): .close() is possible on a channel and should be
     # used in circumstances in which the with statement does not fit the needs
@@ -48,6 +55,9 @@ def run():
         retrieve_comments(stub, "post1")
         print("-------------- Create Comments --------------")
         create_comment(stub)
+        print("-------------- Expand Comment --------------")
+        expand_comment(stub)
+
 
 
 if __name__ == "__main__":
