@@ -68,22 +68,20 @@ class Post(_message.Message):
     def __init__(self, id: _Optional[_Union[PostID, _Mapping]] = ..., title: _Optional[str] = ..., text: _Optional[str] = ..., video: _Optional[str] = ..., img: _Optional[str] = ..., author: _Optional[str] = ..., score: _Optional[int] = ..., state: _Optional[_Union[PostState, str]] = ..., pub_date: _Optional[str] = ..., subreddit: _Optional[_Union[Subreddit, _Mapping]] = ...) -> None: ...
 
 class CreatePostRequest(_message.Message):
-    __slots__ = ("title", "text", "video", "img", "author", "pub_date", "subreddit")
+    __slots__ = ("title", "text", "video", "img", "author", "subreddit")
     TITLE_FIELD_NUMBER: _ClassVar[int]
     TEXT_FIELD_NUMBER: _ClassVar[int]
     VIDEO_FIELD_NUMBER: _ClassVar[int]
     IMG_FIELD_NUMBER: _ClassVar[int]
     AUTHOR_FIELD_NUMBER: _ClassVar[int]
-    PUB_DATE_FIELD_NUMBER: _ClassVar[int]
     SUBREDDIT_FIELD_NUMBER: _ClassVar[int]
     title: str
     text: str
     video: str
     img: str
     author: str
-    pub_date: str
     subreddit: Subreddit
-    def __init__(self, title: _Optional[str] = ..., text: _Optional[str] = ..., video: _Optional[str] = ..., img: _Optional[str] = ..., author: _Optional[str] = ..., pub_date: _Optional[str] = ..., subreddit: _Optional[_Union[Subreddit, _Mapping]] = ...) -> None: ...
+    def __init__(self, title: _Optional[str] = ..., text: _Optional[str] = ..., video: _Optional[str] = ..., img: _Optional[str] = ..., author: _Optional[str] = ..., subreddit: _Optional[_Union[Subreddit, _Mapping]] = ...) -> None: ...
 
 class CommentID(_message.Message):
     __slots__ = ("id",)
@@ -114,18 +112,18 @@ class Comment(_message.Message):
     def __init__(self, id: _Optional[_Union[CommentID, _Mapping]] = ..., text: _Optional[str] = ..., author: _Optional[str] = ..., score: _Optional[int] = ..., state: _Optional[_Union[CommentState, str]] = ..., pub_date: _Optional[str] = ..., parent_post_id: _Optional[_Union[PostID, _Mapping]] = ..., parent_comment_id: _Optional[_Union[CommentID, _Mapping]] = ..., hasReplies: bool = ...) -> None: ...
 
 class CreateCommentRequest(_message.Message):
-    __slots__ = ("author", "pub_date", "state", "parent_post_id", "parent_comment_id")
+    __slots__ = ("author", "text", "state", "parent_post_id", "parent_comment_id")
     AUTHOR_FIELD_NUMBER: _ClassVar[int]
-    PUB_DATE_FIELD_NUMBER: _ClassVar[int]
+    TEXT_FIELD_NUMBER: _ClassVar[int]
     STATE_FIELD_NUMBER: _ClassVar[int]
     PARENT_POST_ID_FIELD_NUMBER: _ClassVar[int]
     PARENT_COMMENT_ID_FIELD_NUMBER: _ClassVar[int]
     author: str
-    pub_date: str
+    text: str
     state: CommentState
-    parent_post_id: Post
+    parent_post_id: PostID
     parent_comment_id: CommentID
-    def __init__(self, author: _Optional[str] = ..., pub_date: _Optional[str] = ..., state: _Optional[_Union[CommentState, str]] = ..., parent_post_id: _Optional[_Union[Post, _Mapping]] = ..., parent_comment_id: _Optional[_Union[CommentID, _Mapping]] = ...) -> None: ...
+    def __init__(self, author: _Optional[str] = ..., text: _Optional[str] = ..., state: _Optional[_Union[CommentState, str]] = ..., parent_post_id: _Optional[_Union[PostID, _Mapping]] = ..., parent_comment_id: _Optional[_Union[CommentID, _Mapping]] = ...) -> None: ...
 
 class MostUpvotedCommentRequest(_message.Message):
     __slots__ = ("post", "number")

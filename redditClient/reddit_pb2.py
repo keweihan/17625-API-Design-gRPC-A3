@@ -14,19 +14,19 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0creddit.proto\x12\x06reddit\"\x17\n\x04User\x12\x0f\n\x07user_id\x18\x01 \x01(\t\"\x14\n\x06PostID\x12\n\n\x02id\x18\x01 \x01(\t\"\xef\x01\n\x04Post\x12\x1a\n\x02id\x18\n \x01(\x0b\x32\x0e.reddit.PostID\x12\r\n\x05title\x18\x01 \x01(\t\x12\x0c\n\x04text\x18\x02 \x01(\t\x12\x0f\n\x05video\x18\x03 \x01(\tH\x00\x12\r\n\x03img\x18\x04 \x01(\tH\x00\x12\x13\n\x06\x61uthor\x18\x05 \x01(\tH\x01\x88\x01\x01\x12\r\n\x05score\x18\x06 \x01(\x05\x12 \n\x05state\x18\x07 \x01(\x0e\x32\x11.reddit.PostState\x12\x10\n\x08pub_date\x18\x08 \x01(\t\x12$\n\tsubreddit\x18\t \x01(\x0b\x32\x11.reddit.SubredditB\x05\n\x03urlB\t\n\x07_author\"\xaf\x01\n\x11\x43reatePostRequest\x12\r\n\x05title\x18\x01 \x01(\t\x12\x0c\n\x04text\x18\x02 \x01(\t\x12\x0f\n\x05video\x18\x03 \x01(\tH\x00\x12\r\n\x03img\x18\x04 \x01(\tH\x00\x12\x13\n\x06\x61uthor\x18\x05 \x01(\tH\x01\x88\x01\x01\x12\x10\n\x08pub_date\x18\x08 \x01(\t\x12$\n\tsubreddit\x18\t \x01(\x0b\x32\x11.reddit.SubredditB\x05\n\x03urlB\t\n\x07_author\"\x17\n\tCommentID\x12\n\n\x02id\x18\x01 \x01(\t\"\x84\x02\n\x07\x43omment\x12\x1d\n\x02id\x18\t \x01(\x0b\x32\x11.reddit.CommentID\x12\x0c\n\x04text\x18\x0b \x01(\t\x12\x0e\n\x06\x61uthor\x18\n \x01(\t\x12\r\n\x05score\x18\x01 \x01(\x05\x12#\n\x05state\x18\x02 \x01(\x0e\x32\x14.reddit.CommentState\x12\x10\n\x08pub_date\x18\x03 \x01(\t\x12(\n\x0eparent_post_id\x18\x04 \x01(\x0b\x32\x0e.reddit.PostIDH\x00\x12.\n\x11parent_comment_id\x18\x05 \x01(\x0b\x32\x11.reddit.CommentIDH\x00\x12\x12\n\nhasReplies\x18\x06 \x01(\x08\x42\x08\n\x06parent\"\xbf\x01\n\x14\x43reateCommentRequest\x12\x0e\n\x06\x61uthor\x18\x05 \x01(\t\x12\x10\n\x08pub_date\x18\x01 \x01(\t\x12#\n\x05state\x18\x02 \x01(\x0e\x32\x14.reddit.CommentState\x12&\n\x0eparent_post_id\x18\x03 \x01(\x0b\x32\x0c.reddit.PostH\x00\x12.\n\x11parent_comment_id\x18\x04 \x01(\x0b\x32\x11.reddit.CommentIDH\x00\x42\x08\n\x06parent\"I\n\x19MostUpvotedCommentRequest\x12\x1c\n\x04post\x18\x01 \x01(\x0b\x32\x0e.reddit.PostID\x12\x0e\n\x06number\x18\x02 \x01(\x05\"P\n\x1a\x45xpandCommentBranchRequest\x12\"\n\x07\x63omment\x18\x01 \x01(\x0b\x32\x11.reddit.CommentID\x12\x0e\n\x06number\x18\x02 \x01(\x05\"F\n\x16RetrieveCommentRequest\x12\x1c\n\x04post\x18\x01 \x01(\x0b\x32\x0e.reddit.PostID\x12\x0e\n\x06number\x18\x02 \x01(\x05\"`\n\tSubreddit\x12\x0c\n\x04name\x18\x04 \x01(\t\x12%\n\x05state\x18\x01 \x01(\x0e\x32\x16.reddit.SubredditState\x12\x10\n\x08pub_date\x18\x02 \x01(\t\x12\x0c\n\x04tags\x18\x03 \x03(\t*>\n\tPostState\x12\x0f\n\x0bNORMAL_POST\x10\x00\x12\x0f\n\x0bLOCKED_POST\x10\x01\x12\x0f\n\x0bHIDDEN_POST\x10\x02*6\n\x0c\x43ommentState\x12\x12\n\x0eNORMAL_COMMENT\x10\x00\x12\x12\n\x0eHIDDEN_COMMENT\x10\x01*S\n\x0eSubredditState\x12\x14\n\x10PUBLIC_SUBREDDIT\x10\x00\x12\x15\n\x11PRIVATE_SUBREDDIT\x10\x01\x12\x14\n\x10HIDDEN_SUBREDDIT\x10\x02\x32\x94\x04\n\x06Reddit\x12\x37\n\nCreatePost\x12\x19.reddit.CreatePostRequest\x1a\x0c.reddit.Post\"\x00\x12.\n\x0c\x44ownvotePost\x12\x0e.reddit.PostID\x1a\x0c.reddit.Post\"\x00\x12,\n\nUpvotePost\x12\x0e.reddit.PostID\x1a\x0c.reddit.Post\"\x00\x12.\n\x0cRetrievePost\x12\x0e.reddit.PostID\x1a\x0c.reddit.Post\"\x00\x12@\n\rCreateComment\x12\x1c.reddit.CreateCommentRequest\x1a\x0f.reddit.Comment\"\x00\x12\x35\n\rUpvoteComment\x12\x11.reddit.CommentID\x1a\x0f.reddit.Comment\"\x00\x12\x37\n\x0f\x44ownvoteComment\x12\x11.reddit.CommentID\x1a\x0f.reddit.Comment\"\x00\x12H\n\rExpandComment\x12\".reddit.ExpandCommentBranchRequest\x1a\x0f.reddit.Comment\"\x00\x30\x01\x12G\n\x10RetrieveComments\x12\x1e.reddit.RetrieveCommentRequest\x1a\x0f.reddit.Comment\"\x00\x30\x01\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0creddit.proto\x12\x06reddit\"\x17\n\x04User\x12\x0f\n\x07user_id\x18\x01 \x01(\t\"\x14\n\x06PostID\x12\n\n\x02id\x18\x01 \x01(\t\"\xef\x01\n\x04Post\x12\x1a\n\x02id\x18\n \x01(\x0b\x32\x0e.reddit.PostID\x12\r\n\x05title\x18\x01 \x01(\t\x12\x0c\n\x04text\x18\x02 \x01(\t\x12\x0f\n\x05video\x18\x03 \x01(\tH\x00\x12\r\n\x03img\x18\x04 \x01(\tH\x00\x12\x13\n\x06\x61uthor\x18\x05 \x01(\tH\x01\x88\x01\x01\x12\r\n\x05score\x18\x06 \x01(\x05\x12 \n\x05state\x18\x07 \x01(\x0e\x32\x11.reddit.PostState\x12\x10\n\x08pub_date\x18\x08 \x01(\t\x12$\n\tsubreddit\x18\t \x01(\x0b\x32\x11.reddit.SubredditB\x05\n\x03urlB\t\n\x07_author\"\x9d\x01\n\x11\x43reatePostRequest\x12\r\n\x05title\x18\x01 \x01(\t\x12\x0c\n\x04text\x18\x02 \x01(\t\x12\x0f\n\x05video\x18\x03 \x01(\tH\x00\x12\r\n\x03img\x18\x04 \x01(\tH\x00\x12\x13\n\x06\x61uthor\x18\x05 \x01(\tH\x01\x88\x01\x01\x12$\n\tsubreddit\x18\t \x01(\x0b\x32\x11.reddit.SubredditB\x05\n\x03urlB\t\n\x07_author\"\x17\n\tCommentID\x12\n\n\x02id\x18\x01 \x01(\t\"\x84\x02\n\x07\x43omment\x12\x1d\n\x02id\x18\t \x01(\x0b\x32\x11.reddit.CommentID\x12\x0c\n\x04text\x18\x0b \x01(\t\x12\x0e\n\x06\x61uthor\x18\n \x01(\t\x12\r\n\x05score\x18\x01 \x01(\x05\x12#\n\x05state\x18\x02 \x01(\x0e\x32\x14.reddit.CommentState\x12\x10\n\x08pub_date\x18\x03 \x01(\t\x12(\n\x0eparent_post_id\x18\x04 \x01(\x0b\x32\x0e.reddit.PostIDH\x00\x12.\n\x11parent_comment_id\x18\x05 \x01(\x0b\x32\x11.reddit.CommentIDH\x00\x12\x12\n\nhasReplies\x18\x06 \x01(\x08\x42\x08\n\x06parent\"\xbd\x01\n\x14\x43reateCommentRequest\x12\x0e\n\x06\x61uthor\x18\x05 \x01(\t\x12\x0c\n\x04text\x18\x06 \x01(\t\x12#\n\x05state\x18\x02 \x01(\x0e\x32\x14.reddit.CommentState\x12(\n\x0eparent_post_id\x18\x03 \x01(\x0b\x32\x0e.reddit.PostIDH\x00\x12.\n\x11parent_comment_id\x18\x04 \x01(\x0b\x32\x11.reddit.CommentIDH\x00\x42\x08\n\x06parent\"I\n\x19MostUpvotedCommentRequest\x12\x1c\n\x04post\x18\x01 \x01(\x0b\x32\x0e.reddit.PostID\x12\x0e\n\x06number\x18\x02 \x01(\x05\"P\n\x1a\x45xpandCommentBranchRequest\x12\"\n\x07\x63omment\x18\x01 \x01(\x0b\x32\x11.reddit.CommentID\x12\x0e\n\x06number\x18\x02 \x01(\x05\"F\n\x16RetrieveCommentRequest\x12\x1c\n\x04post\x18\x01 \x01(\x0b\x32\x0e.reddit.PostID\x12\x0e\n\x06number\x18\x02 \x01(\x05\"`\n\tSubreddit\x12\x0c\n\x04name\x18\x04 \x01(\t\x12%\n\x05state\x18\x01 \x01(\x0e\x32\x16.reddit.SubredditState\x12\x10\n\x08pub_date\x18\x02 \x01(\t\x12\x0c\n\x04tags\x18\x03 \x03(\t*>\n\tPostState\x12\x0f\n\x0bNORMAL_POST\x10\x00\x12\x0f\n\x0bLOCKED_POST\x10\x01\x12\x0f\n\x0bHIDDEN_POST\x10\x02*6\n\x0c\x43ommentState\x12\x12\n\x0eNORMAL_COMMENT\x10\x00\x12\x12\n\x0eHIDDEN_COMMENT\x10\x01*S\n\x0eSubredditState\x12\x14\n\x10PUBLIC_SUBREDDIT\x10\x00\x12\x15\n\x11PRIVATE_SUBREDDIT\x10\x01\x12\x14\n\x10HIDDEN_SUBREDDIT\x10\x02\x32\x94\x04\n\x06Reddit\x12\x37\n\nCreatePost\x12\x19.reddit.CreatePostRequest\x1a\x0c.reddit.Post\"\x00\x12.\n\x0c\x44ownvotePost\x12\x0e.reddit.PostID\x1a\x0c.reddit.Post\"\x00\x12,\n\nUpvotePost\x12\x0e.reddit.PostID\x1a\x0c.reddit.Post\"\x00\x12.\n\x0cRetrievePost\x12\x0e.reddit.PostID\x1a\x0c.reddit.Post\"\x00\x12@\n\rCreateComment\x12\x1c.reddit.CreateCommentRequest\x1a\x0f.reddit.Comment\"\x00\x12\x35\n\rUpvoteComment\x12\x11.reddit.CommentID\x1a\x0f.reddit.Comment\"\x00\x12\x37\n\x0f\x44ownvoteComment\x12\x11.reddit.CommentID\x1a\x0f.reddit.Comment\"\x00\x12H\n\rExpandComment\x12\".reddit.ExpandCommentBranchRequest\x1a\x0f.reddit.Comment\"\x00\x30\x01\x12G\n\x10RetrieveComments\x12\x1e.reddit.RetrieveCommentRequest\x1a\x0f.reddit.Comment\"\x00\x30\x01\x62\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'reddit_pb2', _globals)
 if _descriptor._USE_C_DESCRIPTORS == False:
   DESCRIPTOR._options = None
-  _globals['_POSTSTATE']._serialized_start=1300
-  _globals['_POSTSTATE']._serialized_end=1362
-  _globals['_COMMENTSTATE']._serialized_start=1364
-  _globals['_COMMENTSTATE']._serialized_end=1418
-  _globals['_SUBREDDITSTATE']._serialized_start=1420
-  _globals['_SUBREDDITSTATE']._serialized_end=1503
+  _globals['_POSTSTATE']._serialized_start=1280
+  _globals['_POSTSTATE']._serialized_end=1342
+  _globals['_COMMENTSTATE']._serialized_start=1344
+  _globals['_COMMENTSTATE']._serialized_end=1398
+  _globals['_SUBREDDITSTATE']._serialized_start=1400
+  _globals['_SUBREDDITSTATE']._serialized_end=1483
   _globals['_USER']._serialized_start=24
   _globals['_USER']._serialized_end=47
   _globals['_POSTID']._serialized_start=49
@@ -34,21 +34,21 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   _globals['_POST']._serialized_start=72
   _globals['_POST']._serialized_end=311
   _globals['_CREATEPOSTREQUEST']._serialized_start=314
-  _globals['_CREATEPOSTREQUEST']._serialized_end=489
-  _globals['_COMMENTID']._serialized_start=491
-  _globals['_COMMENTID']._serialized_end=514
-  _globals['_COMMENT']._serialized_start=517
-  _globals['_COMMENT']._serialized_end=777
-  _globals['_CREATECOMMENTREQUEST']._serialized_start=780
-  _globals['_CREATECOMMENTREQUEST']._serialized_end=971
-  _globals['_MOSTUPVOTEDCOMMENTREQUEST']._serialized_start=973
-  _globals['_MOSTUPVOTEDCOMMENTREQUEST']._serialized_end=1046
-  _globals['_EXPANDCOMMENTBRANCHREQUEST']._serialized_start=1048
-  _globals['_EXPANDCOMMENTBRANCHREQUEST']._serialized_end=1128
-  _globals['_RETRIEVECOMMENTREQUEST']._serialized_start=1130
-  _globals['_RETRIEVECOMMENTREQUEST']._serialized_end=1200
-  _globals['_SUBREDDIT']._serialized_start=1202
-  _globals['_SUBREDDIT']._serialized_end=1298
-  _globals['_REDDIT']._serialized_start=1506
-  _globals['_REDDIT']._serialized_end=2038
+  _globals['_CREATEPOSTREQUEST']._serialized_end=471
+  _globals['_COMMENTID']._serialized_start=473
+  _globals['_COMMENTID']._serialized_end=496
+  _globals['_COMMENT']._serialized_start=499
+  _globals['_COMMENT']._serialized_end=759
+  _globals['_CREATECOMMENTREQUEST']._serialized_start=762
+  _globals['_CREATECOMMENTREQUEST']._serialized_end=951
+  _globals['_MOSTUPVOTEDCOMMENTREQUEST']._serialized_start=953
+  _globals['_MOSTUPVOTEDCOMMENTREQUEST']._serialized_end=1026
+  _globals['_EXPANDCOMMENTBRANCHREQUEST']._serialized_start=1028
+  _globals['_EXPANDCOMMENTBRANCHREQUEST']._serialized_end=1108
+  _globals['_RETRIEVECOMMENTREQUEST']._serialized_start=1110
+  _globals['_RETRIEVECOMMENTREQUEST']._serialized_end=1180
+  _globals['_SUBREDDIT']._serialized_start=1182
+  _globals['_SUBREDDIT']._serialized_end=1278
+  _globals['_REDDIT']._serialized_start=1486
+  _globals['_REDDIT']._serialized_end=2018
 # @@protoc_insertion_point(module_scope)

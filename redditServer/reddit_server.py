@@ -8,6 +8,7 @@ import argparse
 import grpc
 import reddit_pb2
 import reddit_pb2_grpc
+import datetime
 
 import uuid
 import reddit_server_db
@@ -24,19 +25,20 @@ class RedditService(reddit_pb2_grpc.RedditServicer):
             id          = reddit_pb2.PostID(id=post_id),
             title       = request.title,
             text        = request.text,
+            state       = reddit_pb2.PostState.NORMAL_POST,
             video       = request.video if request.video else None,
             img         = request.img if request.img else None,
-            author      = request.pub_date,
-            pub_date    = request.pub_date,
+            author      = request.author,
+            pub_date    = str(datetime.datetime.now()),
         )
 
         # Insert the new post into the database
         conn = reddit_server_db.get_db()
         cur = conn.cursor()
         cur.execute("""
-            INSERT INTO posts (id, title, text, video, img, author, pub_date)
-            VALUES (?, ?, ?, ?, ?, ?, ?)""",
-            (post_id, newPost.title, newPost.text, newPost.video, newPost.img, newPost.author, newPost.pub_date)
+            INSERT INTO posts (id, title, text, video, img, author, pub_date, state)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)""",
+            (post_id, newPost.title, newPost.text, newPost.video, newPost.img, newPost.author, newPost.pub_date, 0)
         )
         conn.commit()
         conn.close()
@@ -110,7 +112,35 @@ class RedditService(reddit_pb2_grpc.RedditServicer):
         return retObj
     
     def CreateComment(self, request, context):
-        return super().CreateComment(request, context)
+        # Generate a unique comment ID
+        comment_id = str(uuid.uuid4())[:4] # take first four characters only - for demo purpose.
+
+        # Extract other post data from the request
+        newComment = reddit_pb2.Comment(
+            id          = reddit_pb2.CommentID(id=comment_id),
+            text        = request.text,
+            author      = request.author,
+            score       = 0,
+            state       = reddit_pb2.CommentState.NORMAL_COMMENT,
+            pub_date    = str(datetime.datetime.now()),
+            parent_post_id = request.parent_post_id,
+            parent_comment_id = request.parent_comment_id
+        )
+
+        # Insert the new post into the database
+        conn = reddit_server_db.get_db()
+        cur = conn.cursor()
+        cur.execute("""
+            INSERT INTO comments (id, text, author, score, state, pub_date, parent_post_id, parent_comment_id)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)""",
+            (comment_id, newComment.text, newComment.author, 0, 0,  
+             newComment.pub_date, request.parent_post_id.id, request.parent_comment_id.id)
+        )
+        conn.commit()
+        conn.close()
+
+        # Create and return the Post object
+        return newComment
     
     def UpvoteComment(self, request, context):
         return super().UpvoteComment(request, context)

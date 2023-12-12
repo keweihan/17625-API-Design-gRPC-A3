@@ -28,6 +28,10 @@ def create_empty_post(stub: reddit_pb2_grpc.RedditStub):
     response = stub.CreatePost(reddit_pb2.CreatePostRequest())
     print("Received post %s" % (response.id))
 
+def create_comment(stub: reddit_pb2_grpc.RedditStub):
+    response = stub.CreateComment(reddit_pb2.CreateCommentRequest(text="Time to dine"))
+    print("Received post %s" % (response.id))
+
 def run():
     # NOTE(gRPC Python Team): .close() is possible on a channel and should be
     # used in circumstances in which the with statement does not fit the needs
@@ -42,6 +46,8 @@ def run():
         upvote_post(stub, "post1")
         print("-------------- Retrieve Comments --------------")
         retrieve_comments(stub, "post1")
+        print("-------------- Create Comments --------------")
+        create_comment(stub)
 
 
 if __name__ == "__main__":
