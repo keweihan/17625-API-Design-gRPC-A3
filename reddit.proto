@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package reddit;
 
-// The greeting service definition.
+// Reddit service definition.
 service Reddit {
     // Creates a post object
     rpc CreatePost (CreatePostRequest) returns (Post) {}
