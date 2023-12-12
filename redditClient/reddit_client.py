@@ -38,6 +38,9 @@ def expand_comment(stub: reddit_pb2_grpc.RedditStub):
     for comment in comments:
         print(f"{comment.text}")
     
+def upvote_comment(stub: reddit_pb2_grpc.RedditStub, comment_id: str):
+    response = stub.UpvoteComment(reddit_pb2.CommentID(id=comment_id))
+    print(f"Received comment {response.text} has {response.score} votes")
     
 def run():
     # NOTE(gRPC Python Team): .close() is possible on a channel and should be
@@ -57,7 +60,8 @@ def run():
         create_comment(stub)
         print("-------------- Expand Comment --------------")
         expand_comment(stub)
-
+        print("-------------- Upvote Comment --------------")
+        upvote_comment(stub, "comment1")
 
 
 if __name__ == "__main__":

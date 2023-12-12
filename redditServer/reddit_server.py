@@ -153,10 +153,62 @@ class RedditService(reddit_pb2_grpc.RedditServicer):
         return newComment
     
     def UpvoteComment(self, request, context):
-        return super().UpvoteComment(request, context)
+        comment_id = request.id
+        
+        conn = reddit_server_db.get_db()
+        cur = conn.cursor()
+        cur.execute("UPDATE comments SET score = score + 1 WHERE id = ?", (comment_id,))
+        cur.execute("SELECT * FROM comments WHERE id = ?", (comment_id,))
+        updatedComment = dict(cur.fetchone())
+        conn.commit()
+        conn.close()
+        
+        statemap = {
+            0: reddit_pb2.CommentState.NORMAL_COMMENT,
+            1: reddit_pb2.CommentState.HIDDEN_COMMENT
+        }
+                
+        retrievedComment = reddit_pb2.Comment(
+            id          = reddit_pb2.CommentID(id=request.id),
+            text        = updatedComment["text"],
+            author      = updatedComment["author"],
+            score       = updatedComment["score"],
+            state       = statemap[updatedComment["state"]],
+            pub_date    = updatedComment["pub_date"],
+            parent_post_id = reddit_pb2.PostID(id=updatedComment["parent_post_id"]),
+            parent_comment_id = reddit_pb2.CommentID(id=updatedComment["parent_comment_id"])
+        )
+
+        return retrievedComment
     
     def DownvoteComment(self, request, context):
-        return super().DownvoteComment(request, context)
+        comment_id = request.id
+        
+        conn = reddit_server_db.get_db()
+        cur = conn.cursor()
+        cur.execute("UPDATE comments SET score = score - 1 WHERE id = ?", (comment_id,))
+        cur.execute("SELECT * FROM comments WHERE id = ?", (comment_id,))
+        updatedComment = dict(cur.fetchone())
+        conn.commit()
+        conn.close()
+        
+        statemap = {
+            0: reddit_pb2.CommentState.NORMAL_COMMENT,
+            1: reddit_pb2.CommentState.HIDDEN_COMMENT
+        }
+                
+        retrievedComment = reddit_pb2.Comment(
+            id          = reddit_pb2.CommentID(id=request.id),
+            text        = updatedComment["text"],
+            author      = updatedComment["author"],
+            score       = updatedComment["score"],
+            state       = statemap[updatedComment["state"]],
+            pub_date    = updatedComment["pub_date"],
+            parent_post_id = reddit_pb2.PostID(id=updatedComment["parent_post_id"]),
+            parent_comment_id = reddit_pb2.CommentID(id=updatedComment["parent_comment_id"])
+        )
+
+        return retrievedComment
     
     def ExpandComment(self, request, context):
         comment_id = request.comment.id
@@ -196,7 +248,6 @@ class RedditService(reddit_pb2_grpc.RedditServicer):
             1 : reddit_pb2.CommentState.HIDDEN_COMMENT
         }
         
-        print(str(expanded_comments))
         for comment in expanded_comments:
             commentDict = dict(comment)
             retObj = reddit_pb2.Comment(
